@@ -4,6 +4,7 @@ const { Router } = require("express");
 const { routerProduct } = require("./ProductRouter");
 const { routerOrderProduct } = require("./OrderProductRouter");
 const { userRouter } = require("./UserRouter");
+const { authRouter } = require("./autRouter");
 
 function setUpRoutes(app) {
   const router = Router();
@@ -14,6 +15,7 @@ function setUpRoutes(app) {
   routerV1.use("/product", routerProduct);
   routerV1.use("/order/product/", routerOrderProduct);
   routerV1.use("/user", userRouter);
+  routerV1.use("/", authRouter);
 }
 
 module.exports = { setUpRoutes };

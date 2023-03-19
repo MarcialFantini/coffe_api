@@ -8,7 +8,7 @@ class ProductService {
 
   async getPage(pageNumber) {
     const page = await models.Product.findAll({
-      attributes: ["name", "price", "stock", "description"],
+      attributes: ["name", "price", "stock", "description", "url_img",'id'],
       limit: 20,
       offset: pageNumber * 20,
     });

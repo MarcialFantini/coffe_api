@@ -15,6 +15,6 @@ routerOrderProduct.get(
   async (req, res, next) => await getOrdersProducts(req, res, next)
 );
 
-routerOrderProduct.get("/:id",async (req,res,next)=> await )
+routerOrderProduct.get("/:id", async (req, res, next) => await console.log(""));
 
 module.exports = { routerOrderProduct };

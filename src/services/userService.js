@@ -1,8 +1,13 @@
 const { models } = require("../lib/sequelize");
 
+const bcrypt = require("bcrypt");
+
 class userService {
   async createUser(data) {
-    await models.User.create(data);
+    const newUser = { ...data };
+    newUser.password = await bcrypt.hash(data.password, 10);
+    await models.User.create(newUser);
+    console.log(newUser);
   }
   async delOneUser(id) {
     const isDestroy = await models.User.destroy({
@@ -38,6 +43,17 @@ class userService {
     }
 
     return result;
+  }
+
+  async getUserForEmail(email) {
+    const user = await models.User.findOne({
+      attributes: ["email", "password", "id"],
+      where: {
+        email: email,
+      },
+    });
+
+    return user;
   }
 }
 

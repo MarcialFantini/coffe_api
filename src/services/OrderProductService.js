@@ -8,7 +8,7 @@ class OrderProduct {
     return "created";
   }
 
-  async getAllOrders() {
+  async getAllOrders(page) {
     const orders = await models.OrderProduct.findAll({
       attributes: ["id"],
       include: [
@@ -21,12 +21,17 @@ class OrderProduct {
           attributes: ["name", "price"],
         },
       ],
+      limit: 20,
+      offset: page * 1,
     });
     return orders;
   }
 
   async getOneOrder(id) {
     const order = await models.OrderProduct.findOne({
+      where: {
+        id: id,
+      },
       attributes: ["id", "amount"],
       include: [
         {
@@ -39,6 +44,17 @@ class OrderProduct {
         },
       ],
     });
+    return order;
+  }
+
+  async delOrder(id) {
+    await models.OrderProduct.destroy({
+      where: {
+        id: id,
+      },
+    });
+
+    return { message: "dell" };
   }
 }
 

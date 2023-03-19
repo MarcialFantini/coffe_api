@@ -4,8 +4,13 @@ const services = new OrderProduct();
 
 const createOrderProductController = async (req, res, next) => {
   try {
-    await services.createOrderProduct(req.body);
-    res.json({ message: "completed" });
+    console.log(req.body);
+    await services.createOrderProduct({
+      id_user: req.ID,
+      id_product: req.body.id_product,
+      amount: req.body.amount,
+    });
+    res.status(201).json({ status: 201, message: "created order" });
   } catch (error) {
     console.log(error);
   }
@@ -13,7 +18,7 @@ const createOrderProductController = async (req, res, next) => {
 
 const getOrdersProducts = async (req, res, next) => {
   try {
-    const data = await services.getAllOrders();
+    const data = await services.getAllOrders(req.params.page);
     res.json(data);
   } catch (error) {}
 };
