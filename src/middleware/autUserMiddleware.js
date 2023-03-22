@@ -1,24 +1,24 @@
 const jwt = require("jsonwebtoken");
 
-const autUserMiddleware = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  const role = req.headers.role;
-
-  if (!authHeader || role !== "user") {
-    console.log("siguiente");
-    return next();
-  }
-
+async function autUserMiddleware(req, res, next) {
   try {
+    const authHeader = req.headers.authorization;
+    const role = req.headers.role;
+
+    if (!authHeader || role !== "user") {
+      console.log("siguiente");
+      throw new Error({ message: "not authorization" });
+    }
+
     const [bearer, token] = authHeader.split(" ");
 
     const user = await jwt.verify(token, process.env.CLAVE);
     req.Role = user.role;
     req.ID = user.id;
+    next();
   } catch (err) {
-    console.log("no valid");
+    res.json(err);
   }
-  next();
-};
+}
 
 module.exports = { autUserMiddleware };

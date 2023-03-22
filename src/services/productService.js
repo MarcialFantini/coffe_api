@@ -1,4 +1,6 @@
+const { Op } = require("sequelize");
 const { models } = require("../lib/sequelize");
+const { ImagesModel } = require("../db/models/images");
 
 class ProductService {
   async createProduct(data) {
@@ -8,7 +10,8 @@ class ProductService {
 
   async getPage(pageNumber) {
     const page = await models.Product.findAll({
-      attributes: ["name", "price", "stock", "description", "url_img",'id'],
+      attributes: ["name", "price", "stock", "description", "id"],
+      include: { model: ImagesModel, attributes: ["id"] },
       limit: 20,
       offset: pageNumber * 20,
     });
@@ -18,7 +21,8 @@ class ProductService {
   async getProductOne(id) {
     const product = await models.Product.findOne({
       where: { id: id },
-      attributes: ["id", "price", "name", "stock", "description", "url_img"],
+      include: { model: ImagesModel, attributes: ["id"] },
+      attributes: ["id", "price", "name", "stock", "description"],
     });
 
     if (product === null) {
@@ -39,6 +43,21 @@ class ProductService {
     }
 
     return { message: "del" };
+  }
+
+  async productPageClient(page) {
+    const pageProducts = await models.Product.findAll({
+      attributes: ["id", "name", "price", "stock", "description", "url_img"],
+      where: {
+        stock: {
+          [Op.gt]: 0,
+        },
+      },
+      offset: 20 * page,
+      limit: 20,
+    });
+
+    return pageProducts;
   }
 }
 

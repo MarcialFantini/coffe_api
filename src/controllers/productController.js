@@ -1,16 +1,14 @@
 const { ProductService } = require("../services/productService");
 
-const roles = ["user", "admin"];
-
 const service = new ProductService();
 
 const productCreate = async (req, res, next) => {
   try {
     const { body } = req;
     await service.createProduct(body);
-    res.json({message:"created"});
+    res.json({ message: "created" });
   } catch (error) {
-    console.log(error);
+    console.log(error, "not created");
   }
 };
 
@@ -40,4 +38,20 @@ const delProducts = async (req, res, next) => {
   } catch (error) {}
 };
 
-module.exports = { productCreate, getProductPage, getProductOne, delProducts };
+const getProductsPage = async (req, res, next) => {
+  try {
+    const page = await service.productPageClient(req.params.page);
+    if (!page) {
+      throw new Error("error to get");
+    }
+    res.json(page);
+  } catch (error) {}
+};
+
+module.exports = {
+  getProductsPage,
+  productCreate,
+  getProductPage,
+  getProductOne,
+  delProducts,
+};

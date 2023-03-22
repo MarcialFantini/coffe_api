@@ -5,6 +5,7 @@ const { routerProduct } = require("./ProductRouter");
 const { routerOrderProduct } = require("./OrderProductRouter");
 const { userRouter } = require("./UserRouter");
 const { authRouter } = require("./autRouter");
+const { routerImages } = require("./ImagesRouter");
 
 function setUpRoutes(app) {
   const router = Router();
@@ -16,6 +17,7 @@ function setUpRoutes(app) {
   routerV1.use("/order/product/", routerOrderProduct);
   routerV1.use("/user", userRouter);
   routerV1.use("/", authRouter);
+  routerV1.use("/images", routerImages);
 }
 
 module.exports = { setUpRoutes };

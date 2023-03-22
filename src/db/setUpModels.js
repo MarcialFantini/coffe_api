@@ -1,8 +1,8 @@
-const { DataTypes } = require("sequelize");
 const { Admin, schemaAdmin } = require("./models/admin");
 const { Order, orderSchema } = require("./models/order");
 const { Product, productSchema } = require("./models/product");
 const { User, userSchema } = require("./models/user");
+const { ImagesModel, ImagesModelSchema } = require("./models/images");
 
 async function setUpModels(sequelize) {
   // models init and sync of the tables
@@ -11,6 +11,8 @@ async function setUpModels(sequelize) {
   Order.init(orderSchema, Order.config(sequelize));
   Product.init(productSchema, Product.config(sequelize));
   User.init(userSchema, User.config(sequelize));
+
+  ImagesModel.init(ImagesModelSchema, ImagesModel.config(sequelize));
 
   //relations:
 
@@ -26,6 +28,13 @@ async function setUpModels(sequelize) {
   });
   Order.belongsTo(User, {
     foreignKey: "id_user",
+  });
+
+  Product.hasMany(ImagesModel, {
+    foreignKey: "id_product",
+  });
+  ImagesModel.belongsTo(Product, {
+    foreignKey: "id_product",
   });
 }
 

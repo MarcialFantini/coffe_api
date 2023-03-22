@@ -36,10 +36,6 @@ const productSchema = {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  url_img: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
 };
 
 module.exports = { productSchema, Product, tableProduct };

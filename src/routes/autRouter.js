@@ -48,7 +48,7 @@ authRouter.post("/login/admin", async (req, res, next) => {
         },
         process.env.CLAVE,
         {
-          expiresIn: "1h",
+          expiresIn: "8h",
         }
       );
 

@@ -4,8 +4,13 @@ const { models } = require("../lib/sequelize");
 
 class OrderProduct {
   async createOrderProduct(data) {
+    await models.Product.decrement("stock", {
+      by: data.amount,
+      where: { id: data.id_product },
+    });
     const newOrderProduct = await models.OrderProduct.create(data);
-    return "created";
+
+    return newOrderProduct;
   }
 
   async getAllOrders(page) {
